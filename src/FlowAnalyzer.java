@@ -552,8 +552,10 @@ public class FlowAnalyzer {
 		    	byte[] pbytes = new byte[2];
 		    	byte[] bflow_direction = new byte[1];
 		    	BytesWritable data;
-		    	String strSIP = "0.0.0.0", strTuple = "uninitialized", delimeter = "\t", delimeter2 = ":", strFeatures = "", strKeyPair = "", strValue = "";
+		    	String strSIP = "0.0.0.0", strTuple = "uninitialized", strFeatures = "", strKeyPair = "", strValue = "";
 		    	String strip1 = "0.0.0.0", strip2 = "0.0.0.0", dip, subnet, str_resolvedIP;
+		    	//String  delimeter = "\t", delimeter2 = ":";
+		    	String  delimeter = ",", delimeter2 = ",";
 		    	boolean dnsResolved = false, dnsCount = false, normal_packets = false, hostRelated = false, output_flag = false;
 		    	int dnsQuery_count = 0, dnsAnswer_count = 0, temp, bytesperPacket = 0, flowDirection = -1, cap_modTime = 0, reset_count = 0;
 		    	int f3fLen, f3bLen, tempipd, localDuration;
@@ -722,6 +724,7 @@ public class FlowAnalyzer {
  	 		
  	 		str_IP2 = CommonData.longTostrIp(Bytes.toLong(IP2));
  	 		flowDirection = Bytes.toInt(bflow_direction);
+ 	 		
  	 		strFlow = str_IP1 + delimeter + str_IP2 + delimeter + Bytes.toInt(bSP) + delimeter + Bytes.toInt(bDP);
  	 		//cap_modTime = Bytes.toInt(bmcap_time);
  	 		cap_modTime = Bytes.toLong(bmcap_time);
@@ -873,7 +876,10 @@ public class FlowAnalyzer {
   		   //System.out.println("average bytes forward:\t" + avBytesF + "\t backward:\t" + avBytesB);
   		   //System.out.println(strValue);
   		   //System.exit(0);
-  		   output.collect(new Text(strFlowInterval), new Text(strValue));
+  		   String[] keyParts = fkey.split(delimeter);
+  		   String subKeyfeature = keyParts[2] + delimeter + keyParts[3]; 		// user ports as features
+  		   //output.collect(new Text(strFlowInterval), new Text(strValue));
+  		   output.collect(new Text(subKeyfeature), new Text(strValue));
   	   }
   	
 		 
