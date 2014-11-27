@@ -78,7 +78,9 @@ public class PacketFlowStats {
 					break;	
 					
 				case 'D': case 'd':
-					dstFilename += args[i].substring(2);
+					System.out.println(dstFilename);
+					dstFilename = args[i].substring(2);
+					System.out.println(dstFilename);
 					break;		
 					
 				case 'W': case 'w':
@@ -152,6 +154,8 @@ public class PacketFlowStats {
 				cap_end = cap_start+ONEDAYINSEC;
 			
 			Path outputDir = new Path(dstFilename);
+			System.out.println(dstFilename);
+			//System.exit(0);
 			
 			FlowAnalyzer fwAnalysis = new FlowAnalyzer(conf);
 			fwAnalysis.startAnalysis(inputPath, outputDir, cap_start, cap_end);

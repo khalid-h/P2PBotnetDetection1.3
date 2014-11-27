@@ -859,6 +859,9 @@ public class FlowAnalyzer {
   		   int avBytesF = ((int) Math.round((double)tempFeature.get(0)/(double)tempFeature2.get(0)));
   		   int avBytesB = ((int) Math.round((double) tempFeature.get(1)/(double)tempFeature2.get(1)));
   		   String label = classify(IP1, IP2);
+  		   if (label == "uknown") {
+  			   continue;
+  		   }
   		   // output value format :  bcF, pcF, avBytesF, bcB, pcB, avBytesB, ipdF, ipdB, varF, varB, #optional diverse_subnets, dnsTotal_count, reset_count
   		   strValue =  tempFeature.get(0) + delimeter + tempFeature2.get(0) + delimeter + avBytesF + delimeter 
   				   + tempFeature.get(1) + delimeter + tempFeature2.get(1) + delimeter + avBytesB +
@@ -963,9 +966,9 @@ public class FlowAnalyzer {
 		 return "unknown";
 	 }
 	
-private JobConf getFlowGenJobConf(String jobName, Path inFilePath){
+private JobConf getFlowGenJobConf(String jobName, Path inFilePath, Path Output){
 		
-	    Path Output = new Path(jobName);			
+	    //Path Output = new Path(jobName);			
         conf.setJobName(jobName);     
         conf.setNumReduceTasks(1);
         
@@ -990,7 +993,7 @@ private JobConf getFlowGenJobConf(String jobName, Path inFilePath){
 	
 	public void startAnalysis (Path inputDir, Path outputDir,long cap_start, long cap_end) throws IOException {
 		FileSystem fs = FileSystem.get(conf);
-        JobConf fGenJobconf = getFlowGenJobConf("PcapFlowStats", inputDir); 
+        JobConf fGenJobconf = getFlowGenJobConf("PcapFlowStats", inputDir, outputDir); 
         fGenJobconf.setLong("pcap.file.captime.min", cap_start);
         fGenJobconf.setLong("pcap.file.captime.max", cap_end);
 		
