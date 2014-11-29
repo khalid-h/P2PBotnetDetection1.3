@@ -862,7 +862,7 @@ public class FlowAnalyzer {
   		   int avBytesF = ((int) Math.round((double)tempFeature.get(0)/(double)tempFeature2.get(0)));
   		   int avBytesB = ((int) Math.round((double) tempFeature.get(1)/(double)tempFeature2.get(1)));
   		   String label = classify(IP1, IP2);
-  		   if (label == "uknown") {
+  		   if (label == "unknown") {
   			   continue;
   		   }
   		   // output value format :  bcF, pcF, avBytesF, bcB, pcB, avBytesB, ipdF, ipdB, varF, varB, #optional diverse_subnets, dnsTotal_count, reset_count
@@ -975,8 +975,9 @@ public class FlowAnalyzer {
 private JobConf getFlowGenJobConf(String jobName, Path inFilePath, Path Output){
 		
 	    //Path Output = new Path(jobName);			
-        conf.setJobName(jobName);     
-        conf.setNumReduceTasks(1);
+        conf.setJobName(jobName); 
+        //conf.setNumMapTasks(16);
+        conf.setNumReduceTasks(16);
         
         conf.setMapOutputKeyClass(BytesWritable.class);
         conf.setMapOutputValueClass(BytesWritable.class);	
